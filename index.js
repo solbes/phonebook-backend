@@ -1,7 +1,17 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
+morgan.token('postdata', function (req, res) { 
+  if (req.method === 'POST') {
+    return JSON.stringify(req.body)
+  } else {
+    return ''
+  }
+ })
+
 app.use(express.json()) 
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postdata'))
 
 let persons = [
   { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -43,6 +53,7 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const id = Math.floor(1e6*Math.random())
   const person = {...req.body, id: id}
+  console.log(req.method)
 
   // check if name or number missing
   if ( !person.name ) {

@@ -43,13 +43,9 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {
+  Person.findById(req.params.id).then(person => {
     res.json(person)
-  } else {
-    res.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -59,12 +55,9 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-  
-  //const id = Math.floor(1e6*Math.random())
-  //const person = {...req.body, id: id}
+
   const body = req.body
 
-  // check if name or number missing
   if ( !body.name ) {
     return res.status(400).json({ 
       error: 'name missing' 

@@ -3,16 +3,15 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
-const { response } = require('express')
 const app = express()
 
-morgan.token('postdata', function (req, res) { 
+morgan.token('postdata', req => { 
   if (req.method === 'POST') {
     return JSON.stringify(req.body)
   } else {
     return ''
   }
- })
+})
 
 app.use(cors())
 app.use(express.static('build'))
@@ -40,12 +39,12 @@ app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id).then(person => {
     res.json(person)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end()
     })
     .catch(error => next(error))

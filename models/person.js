@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 mongoose.set('useFindAndModify', false)
-mongoose.set('useCreateIndex', true);
-const uniqueValidator = require('mongoose-unique-validator');
+mongoose.set('useCreateIndex', true)
+const uniqueValidator = require('mongoose-unique-validator')
 
 const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
